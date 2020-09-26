@@ -1,0 +1,314 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#TODO: Add import statements"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#Assign the data to predictor and outcome variables\n",
+    "#TODO: Load the data\n",
+    "#train_data = None\n",
+    "#X = None\n",
+    "#y = None"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "train_data = pd.read_csv(\"dataPR.csv\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# data.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# X=np.c_[data.Var_X]\n",
+    "X=train_data['Var_X'].values.reshape(-1,1)\n",
+    "y=data.Var_Y.values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(20L, 1L)"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "X.shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#Create polynomial features\n",
+    "#TODO: Create a PolynomialFeatures object, then fit and transform the\n",
+    "#predictor feature\n",
+    "#poly_feat = None\n",
+    "#X_poly = None"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### PolynomialFeatures\n",
+    "#### For example, if an input sample is two dimensional and of the form [a, b], the degree-2 polynomial features are [1, a, b, a^2, ab, b^2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 74,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.preprocessing import PolynomialFeatures\n",
+    "poly_feat = PolynomialFeatures(4)\n",
+    "X_poly = poly_feat.fit_transform(X)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(20L, 5L)"
+      ]
+     },
+     "execution_count": 75,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "X_poly.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 76,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# X_poly"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#Make and fit the polynomial regression model\n",
+    "#TODO: Create a LinearRegression object and fit it to the polynomial predictor\n",
+    "#features\n",
+    "#poly_model = None"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.linear_model import LinearRegression\n",
+    "poly_model = LinearRegression(fit_intercept=False).fit(X_poly,y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_hat = poly_model.predict(X_poly)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.collections.PathCollection at 0x1a1facc0>"
+      ]
+     },
+     "execution_count": 79,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.scatter(y_hat,X)\n",
+    "plt.scatter(train_data.Var_Y,train_data.Var_X,color='red')\n",
+    "# train_data.plot(kind='scatter',x='Var_X',y='Var_Y',color='red')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "MAE = $\\sum {|\\hat{y}-y|}$\n",
+    "\n",
+    "MSE = $\\sum {(\\hat{y}-y)^2}$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MAE = np.mean(np.absolute(y_hat - y))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 81,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.0881879820699782"
+      ]
+     },
+     "execution_count": 81,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "MAE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 82,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MSE = np.mean((y_hat-y)**2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "1.7503964875892937"
+      ]
+     },
+     "execution_count": 83,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "MSE"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Poly = 2\n",
+    "3.609402687469462\n",
+    "19.01713659639502\n",
+    "Poly = 3\n",
+    "1.8571668817504654\n",
+    "4.437670863804859\n",
+    "Poly = 4\n",
+    "1.0881879820699782\n",
+    "1.7503964875892937"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 2",
+   "language": "python",
+   "name": "python2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.16"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
